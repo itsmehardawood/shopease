@@ -1,125 +1,472 @@
 import 'package:flutter/material.dart';
+import 'package:shopease/main_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(), // Start with Splash Screen
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class SplashScreen extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+    // Wait for 2 seconds and then navigate to SignUp
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignUp()),
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      backgroundColor: Colors.white, // Background color
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        child: Image.network(
+          'https://picsum.photos/200', // ✅ Fixed direct image URL
+          width: 200,
+          height: 200,
+          fit: BoxFit.cover,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+class SignUp extends StatelessWidget {
+  const SignUp({Key? key}) : super(key: key); // ✅ Added constructor
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFf7faf7),
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 28,
+            )),
+        backgroundColor: Color(0xFFf7faf7),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Sign Up ",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Name",
+                labelStyle: TextStyle(color: Colors.grey),
+                // Label inside TextField
+                filled: true,
+                // Enables background color
+                fillColor: Colors.white,
+                // White background
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  borderSide: BorderSide.none, // No border
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 18), // Padding inside TextField
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Email",
+                labelStyle: TextStyle(color: Colors.grey),
+                // Label inside TextField
+                filled: true,
+                // Enables background color
+                fillColor: Colors.white,
+                // White background
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  borderSide: BorderSide.none, // No border
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 18), // Padding inside TextField
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Password",
+                labelStyle: TextStyle(color: Colors.grey),
+                // Label inside TextField
+                filled: true,
+                // Enables background color
+                fillColor: Colors.white,
+                // White background
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  borderSide: BorderSide.none, // No border
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 18), // Padding inside TextField
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LogIn()));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Already have an Account?",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: Color(0XFFBA3318),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              height: 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Color(0XFFcf472b)),
+              child: Center(
+                child: Text(
+                  "SIGN UP",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 200,
+            ),
+            Center(child: Text("Or Sign up with social account")),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 40,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle, // Makes it a perfect circle
+                  ),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    backgroundImage: NetworkImage(
+                      'https://cdn.iconscout.com/icon/free/png-512/free-google-icon-download-in-svg-png-gif-file-formats--logo-social-media-1507807.png?f=webp&w=256', // ✅ Direct Image URL
+                    ),
+                    onBackgroundImageError: (exception, stackTrace) {
+                      print("Error loading image: $exception");
+                    },
+                  ),
+                ),
+                SizedBox(width: 20),
+                Container(
+                  height: 40,
+                  width: 50,
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Image.network(
+                    'https://cdn.iconscout.com/icon/free/png-512/free-facebook-logo-icon-download-in-svg-png-gif-file-formats--fb-social-media-pack-logos-icons-721950.png?f=webp&w=256', // ✅ Direct Image URL
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.error, color: Colors.red); // Show error icon
+                    },
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// login Page
+
+class LogIn extends StatelessWidget {
+  const LogIn({Key? key}) : super(key: key); // ✅ Added constructor
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFf7faf7),
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 28,
+            )),
+        backgroundColor: Color(0xFFf7faf7),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Login ",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Email",
+                labelStyle: TextStyle(color: Colors.grey),
+                // Label inside TextField
+                filled: true,
+                // Enables background color
+                fillColor: Colors.white,
+                // White background
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  borderSide: BorderSide.none, // No border
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 18), // Padding inside TextField
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Password",
+                labelStyle: TextStyle(color: Colors.grey),
+                // Label inside TextField
+                filled: true,
+                // Enables background color
+                fillColor: Colors.white,
+                // White background
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  borderSide: BorderSide.none, // No border
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 18), // Padding inside TextField
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetScreen()));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Forget your Password?",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: Color(0XFFBA3318),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> MainPage()));
+              },
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color(0XFFcf472b)),
+                child: Center(
+                  child: Text(
+                    "LOGIN",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 300,
+            ),
+            Center(child: Text("Or Sign up with social account")),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 40,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle, // Makes it a perfect circle
+                  ),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    backgroundImage: NetworkImage(
+                      'https://cdn.iconscout.com/icon/free/png-512/free-google-icon-download-in-svg-png-gif-file-formats--logo-social-media-1507807.png?f=webp&w=256', // ✅ Direct Image URL
+                    ),
+                    onBackgroundImageError: (exception, stackTrace) {
+                      print("Error loading image: $exception");
+                    },
+                  ),
+                ),
+                SizedBox(width: 20),
+                Container(
+                  height: 40,
+                  width: 50,
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Image.network(
+                    'https://cdn.iconscout.com/icon/free/png-512/free-facebook-logo-icon-download-in-svg-png-gif-file-formats--fb-social-media-pack-logos-icons-721950.png?f=webp&w=256', // ✅ Direct Image URL
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.error, color: Colors.red); // Show error icon
+                    },
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+// Forget Screen
+class ForgetScreen extends StatelessWidget {
+  const ForgetScreen({Key? key}) : super(key: key); // ✅ Added constructor
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFf7faf7),
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 28,
+            )),
+        backgroundColor: Color(0xFFf7faf7),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Forgot Password ",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Text("Please Enter a Valid email to forget Password. And you will receive an Email a link to ReCreate your password."),
+            SizedBox(height: 15,),
+            TextField(
+              decoration: InputDecoration(
+                suffixIcon: Icon(Icons.cancel_outlined,color: Colors.red,),
+                labelText: "Email",
+                labelStyle: TextStyle(color: Colors.grey),
+                // Label inside TextField
+                filled: true,
+                // Enables background color
+                fillColor: Colors.white,
+                // White background
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners// No border
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 18), // Padding inside TextField
+              ),
+            ),
+            SizedBox(height: 80,),
+
+
+
+            Container(
+              height: 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Color(0XFFcf472b)),
+              child: Center(
+                child: Text(
+                  "Send",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
